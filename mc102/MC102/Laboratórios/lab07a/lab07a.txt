@@ -1,0 +1,156 @@
+/* Laboratorio 07a - Cargo-Bot - Part II
+   Autor: Andre Rodrigues Oliveira
+   Email: andre.oliveira@students.ic.unicamp.br
+*/
+
+#include <stdio.h>
+
+#define TRUE 1
+#define FALSE 0
+
+int main() {
+    /* variaveis da posicao atual do braco mecanico e se existe uma caixa */
+    int current_position = 0, holding_box = FALSE;
+     
+    /* variaveis do numero de posicoes, maximo de caixas por posicao, numero de
+         programas, numero de comandos e numero de execucoes */
+    int total_positions, max_height, num_progs, max_commands, num_execs;
+    
+    /* variaveis que armazenam a situacao das caixas, sequencia de execucao, os
+         comandos dos programas e a cor da caixa que o braco esta segurando */
+    char boxes[10][11], exec_sequence[61], programs[9][61], holding_type;
+     
+    /* variaveis auxiliares */
+    int i, j, k, cond, curr_prog, accident = FALSE;
+
+    /* leitura do numero de posicoes, tamanho maximo e numero de programas,
+         numero de comandos e numero de execucoes */
+    scanf("%d %d %d %d %d\n", &total_positions, &max_height, &num_progs, 
+                                                &max_commands, &num_execs);
+
+    /* leitura das caixas em cada posicao */
+    for (i = 0; i < max_height; i++) {
+        scanf("%s\n", boxes[i]);
+    }
+
+    /* leitura da sequencia de execucao */
+    scanf("%s\n", exec_sequence);
+    
+
+    /* leitura dos programas */
+    for (i = 0; i < num_progs; i++) {
+        /* pega o \n anterior e o primeiro comando do programa atual */
+        scanf("%s\n", programs[i]);
+    }
+
+    /* executa todos os programas da lista armazenando o programa atual
+       na variavel curr_prog */
+    for (i = 0; i < num_execs; i++) {
+        curr_prog = (int)exec_sequence[i] - 49;
+        j = 0;
+
+        /* executa o programa em curr_prog enquanto nao alcancar o '*' 
+             ou ocorrer um acidente com as caixas */
+        while ((programs[curr_prog][j] != '*') && (!accident)) {
+            cond = TRUE;
+
+            /* verifica se o caractere eh um condicional e, se for, o valida */
+            switch(programs[curr_prog][j]) {
+                case 'A':
+                    j++;
+                    if (!holding_box)
+                        cond = FALSE;
+                    break;
+                case 'N':
+                    j++;
+                    if (holding_box)
+                        cond = FALSE;
+                    break;
+                case 'B':
+                    j++;
+                    if ((!holding_box) || (holding_type != 'B'))
+                        cond = FALSE;
+                    break;
+                case 'G':
+                    j++;
+                    if ((!holding_box) || (holding_type != 'G'))
+                        cond = FALSE;
+                    break;
+                case 'Y':
+                    j++;
+                    if ((!holding_box) || (holding_type != 'Y'))
+                        cond = FALSE;
+                    break;
+            }
+
+            /* se era um comando basico, ou o condicional era verdadeiro,
+                 executa o comando basico */
+            if (cond) {
+                /* se o comando eh mover a esquerda e ele nao esta na posicao
+                     mais a esquerda */
+                if ((programs[curr_prog][j] == 'L') && (current_position > 0)) {
+                    /* move o braco a esquerda */
+                    current_position--;
+                             
+                    /* verifica se causou um acidente */
+                    if ((boxes[0][current_position] != '.') && (holding_box))
+                        accident = TRUE;
+
+                    /* se o comando eh mover a direita e ele nao esta na posicao
+                         mais a direita */
+                } else if ((programs[curr_prog][j] == 'R') && 
+                                     (current_position < total_positions - 1)) {
+
+                    /* move o braco a direita */
+                    current_position++;
+                             
+                    /* verifica se causou um acidente */
+                    if ((boxes[0][current_position] != '.') && (holding_box))
+                        accident = TRUE;
+                        
+                    /* se o comando eh descer o braco */
+                } else if (programs[curr_prog][j] == 'D') {
+
+                    /* se ele esta segurando uma caixa, deixa a caixa naquela
+                         posicao */
+                    if (holding_box) {
+                        /* procura em qual nivel a caixa ficara e solta */
+                        k = 0;
+                        while ((boxes[k+1][current_position] == '.') && 
+                                   (k < max_height - 1))
+                            k++;
+                        boxes[k][current_position] = holding_type;
+                        holding_box = FALSE;
+
+                      /* se ele nao esta segurando uma caixa, mas existe uma 
+                          caixa naquela posicao, desce e pega a caixa */
+                    } else if (boxes[max_height-1][current_position] != '.') {
+                        k = 0;
+                        while ((boxes[k][current_position] == '.') && 
+                                   (k < max_height-1))
+                            k++;
+                        
+                        holding_type = boxes[k][current_position];
+                        boxes[k][current_position] = '.';
+                        holding_box = TRUE;
+                    }
+                }
+            }
+            
+            /* vai para o proximo comando do programa */
+            j++;
+        
+        }
+    }
+
+    /* se durante a execucao de comandos ocorreu um acidente, imprime */
+    if (accident) {
+        printf("Um acidente ocorreu\n");
+    } else {
+        /* caso contrario, imprime a quantidade de caixas em cada posicao */
+        for (i = 0; i < max_height; i++)
+            printf("%s\n", boxes[i]);
+    }
+     
+    return 0;
+}

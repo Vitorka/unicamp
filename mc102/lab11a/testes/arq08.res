@@ -1,0 +1,3 @@
+21997@6241 Alice Araújo 5675.92
+53341@2864 Felipe Mendes 0.00
+12866@8834 Pedro Silva 838.75

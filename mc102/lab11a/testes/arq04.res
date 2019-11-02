@@ -1,0 +1,3 @@
+9665@197 Alice Mendes 1625.44
+1778@407 Joao Dias 650.94
+3913@812 Guilherme Melo 23990.94

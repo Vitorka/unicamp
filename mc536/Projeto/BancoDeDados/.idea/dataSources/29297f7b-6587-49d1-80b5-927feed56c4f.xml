@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="mydb@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.4">
+    <root id="1"/>
+    <schema id="2" parent="1" name="mydb">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="agenda_enderecos"/>
+    <schema id="4" parent="1" name="information_schema"/>
+    <schema id="5" parent="1" name="mysql"/>
+    <schema id="6" parent="1" name="performance_schema"/>
+    <schema id="7" parent="1" name="sys"/>
+    <table id="8" parent="2" name="Aditivo"/>
+    <table id="9" parent="2" name="Categoria"/>
+    <table id="10" parent="2" name="Embalagem"/>
+    <table id="11" parent="2" name="InformacoesNutricionais"/>
+    <table id="12" parent="2" name="Ingrediente"/>
+    <table id="13" parent="2" name="LocalVenda"/>
+    <table id="14" parent="2" name="Produto"/>
+    <table id="15" parent="2" name="Produto_has_Aditivo"/>
+    <table id="16" parent="2" name="Produto_has_Categoria"/>
+    <table id="17" parent="2" name="Produto_has_Ingrediente"/>
+    <table id="18" parent="2" name="Produto_has_LocalVenda"/>
+    <column id="19" parent="8" name="NomeAditivo">
+      <Position>1</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="20" parent="8" name="idAditivo">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="21" parent="8" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idAditivo</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="22" parent="9" name="CategoriaProduto">
+      <Position>1</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="23" parent="9" name="idCategoria">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="24" parent="9" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idCategoria</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="25" parent="10" name="TipoEmbalagem">
+      <Position>1</Position>
+      <DataType>varchar(100)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="26" parent="10" name="MaterialEmbalagem">
+      <Position>2</Position>
+      <DataType>varchar(100)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="27" parent="10" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>TipoEmbalagem
+MaterialEmbalagem</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="28" parent="11" name="Produto_idProduto">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="29" parent="11" name="Energia">
+      <Position>2</Position>
+      <DataType>decimal(50)|0</DataType>
+    </column>
+    <column id="30" parent="11" name="Gordura">
+      <Position>3</Position>
+      <DataType>decimal(50)|0</DataType>
+    </column>
+    <column id="31" parent="11" name="GorduraSaturada">
+      <Position>4</Position>
+      <DataType>decimal(50)|0</DataType>
+    </column>
+    <column id="32" parent="11" name="Carboidratos">
+      <Position>5</Position>
+      <DataType>decimal(50)|0</DataType>
+    </column>
+    <column id="33" parent="11" name="Acucar">
+      <Position>6</Position>
+      <DataType>decimal(50)|0</DataType>
+    </column>
+    <column id="34" parent="11" name="Proteinas">
+      <Position>7</Position>
+      <DataType>decimal(50)|0</DataType>
+    </column>
+    <column id="35" parent="11" name="Sal">
+      <Position>8</Position>
+      <DataType>decimal(50)|0</DataType>
+    </column>
+    <column id="36" parent="11" name="Sodio">
+      <Position>9</Position>
+      <DataType>decimal(50)|0</DataType>
+    </column>
+    <index id="37" parent="11" name="fk_InformacoesNutricionais_Produto1_idx">
+      <ColNames>Produto_idProduto</ColNames>
+    </index>
+    <key id="38" parent="11" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Produto_idProduto</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="39" parent="11" name="fk_InformacoesNutricionais_Produto1">
+      <ColNames>Produto_idProduto</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>Produto</RefTableName>
+      <RefColNames>idProduto</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="40" parent="12" name="NomeIngrediente">
+      <Position>1</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="41" parent="12" name="idIngrediente">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="42" parent="12" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idIngrediente</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="43" parent="13" name="LocalVenda">
+      <Position>1</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="44" parent="13" name="idLocal">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="45" parent="13" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idLocal</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="46" parent="14" name="idProduto">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="47" parent="14" name="NomeProduto">
+      <Position>2</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="48" parent="14" name="Quantidade">
+      <Position>3</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="49" parent="14" name="Marca">
+      <Position>4</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="50" parent="14" name="LocalOrigem">
+      <Position>5</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <column id="51" parent="14" name="Embalagem_TipoEmbalagem">
+      <Position>6</Position>
+      <DataType>varchar(100)|0</DataType>
+    </column>
+    <index id="52" parent="14" name="fk_Produto_Embalagem1_idx">
+      <ColNames>Embalagem_TipoEmbalagem</ColNames>
+    </index>
+    <key id="53" parent="14" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>idProduto</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="54" parent="14" name="fk_Produto_Embalagem1">
+      <ColNames>Embalagem_TipoEmbalagem</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>Embalagem</RefTableName>
+      <RefColNames>TipoEmbalagem</RefColNames>
+    </foreign-key>
+    <column id="55" parent="15" name="Produto_idProduto">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="56" parent="15" name="Aditivo_idAditivo">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="57" parent="15" name="fk_Produto_has_Aditivo_Aditivo1_idx">
+      <ColNames>Aditivo_idAditivo</ColNames>
+    </index>
+    <index id="58" parent="15" name="fk_Produto_has_Aditivo_Produto1_idx">
+      <ColNames>Produto_idProduto</ColNames>
+    </index>
+    <key id="59" parent="15" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Produto_idProduto
+Aditivo_idAditivo</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="60" parent="15" name="fk_Produto_has_Aditivo_Produto1">
+      <ColNames>Produto_idProduto</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>Produto</RefTableName>
+      <RefColNames>idProduto</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="61" parent="15" name="fk_Produto_has_Aditivo_Aditivo1">
+      <ColNames>Aditivo_idAditivo</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>Aditivo</RefTableName>
+      <RefColNames>idAditivo</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="62" parent="16" name="Produto_idProduto">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="63" parent="16" name="Categoria_idCategoria">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="64" parent="16" name="fk_Produto_has_Categoria_Categoria1_idx">
+      <ColNames>Categoria_idCategoria</ColNames>
+    </index>
+    <index id="65" parent="16" name="fk_Produto_has_Categoria_Produto1_idx">
+      <ColNames>Produto_idProduto</ColNames>
+    </index>
+    <key id="66" parent="16" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Produto_idProduto
+Categoria_idCategoria</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="67" parent="16" name="fk_Produto_has_Categoria_Produto1">
+      <ColNames>Produto_idProduto</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>Produto</RefTableName>
+      <RefColNames>idProduto</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="68" parent="16" name="fk_Produto_has_Categoria_Categoria1">
+      <ColNames>Categoria_idCategoria</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>Categoria</RefTableName>
+      <RefColNames>idCategoria</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="69" parent="17" name="Produto_idProduto">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="70" parent="17" name="Ingrediente_idIngrediente">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="71" parent="17" name="fk_Produto_has_Ingrediente_Ingrediente1_idx">
+      <ColNames>Ingrediente_idIngrediente</ColNames>
+    </index>
+    <index id="72" parent="17" name="fk_Produto_has_Ingrediente_Produto1_idx">
+      <ColNames>Produto_idProduto</ColNames>
+    </index>
+    <key id="73" parent="17" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Produto_idProduto
+Ingrediente_idIngrediente</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="74" parent="17" name="fk_Produto_has_Ingrediente_Produto1">
+      <ColNames>Produto_idProduto</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>Produto</RefTableName>
+      <RefColNames>idProduto</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="75" parent="17" name="fk_Produto_has_Ingrediente_Ingrediente1">
+      <ColNames>Ingrediente_idIngrediente</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>Ingrediente</RefTableName>
+      <RefColNames>idIngrediente</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <column id="76" parent="18" name="Produto_idProduto">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="77" parent="18" name="LocalVenda_idLocal">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <index id="78" parent="18" name="fk_Produto_has_LocalVenda_LocalVenda1_idx">
+      <ColNames>LocalVenda_idLocal</ColNames>
+    </index>
+    <index id="79" parent="18" name="fk_Produto_has_LocalVenda_Produto1_idx">
+      <ColNames>Produto_idProduto</ColNames>
+    </index>
+    <key id="80" parent="18" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>Produto_idProduto
+LocalVenda_idLocal</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="81" parent="18" name="fk_Produto_has_LocalVenda_Produto1">
+      <ColNames>Produto_idProduto</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>Produto</RefTableName>
+      <RefColNames>idProduto</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+    <foreign-key id="82" parent="18" name="fk_Produto_has_LocalVenda_LocalVenda1">
+      <ColNames>LocalVenda_idLocal</ColNames>
+      <RefSchemaName>mydb</RefSchemaName>
+      <RefTableName>LocalVenda</RefTableName>
+      <RefColNames>idLocal</RefColNames>
+      <OnUpdate>cascade</OnUpdate>
+      <OnDelete>cascade</OnDelete>
+    </foreign-key>
+  </database-model>
+</dataSource>

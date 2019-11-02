@@ -1,0 +1,4 @@
+scp -r ra178474@ssh.students.ic.unicamp.br:/home/ec2015/ra178474/mc102 
+/home/vaoki/mc102
+
+ssh 178474@ssh.students.ic.unicamp.br

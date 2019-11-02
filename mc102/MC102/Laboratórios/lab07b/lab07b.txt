@@ -1,0 +1,89 @@
+/* Laboratorio 07b - Walk-Bot - Part I
+   Autor: Gustavo Rodrigues Galvao
+   Email: ggalvao@ic.unicamp.br
+*/
+
+#include <stdio.h>
+
+int main() {
+   /* variaveis da entrada */
+   int n, m;
+   char tabuleiro[50][51];
+   /* variaveis auxiliares:
+      - i, lin e col -> servem de indice
+      - passos -> acumula o numero de passos dados 
+      - rastro -> mantem a informacao do numero de passos dados
+      ate uma casa (i,j)
+      - anda -> indica se o Walk-Bot deve continuar caminhando */
+   int i, lin, col, passos, rastro[50][50], anda;
+
+   /* leitura da entrada */
+   scanf("%d %d\n", &n, &m);
+
+   for (i = 0; i < n; i++) {
+      scanf("%s", tabuleiro[i]);
+   }
+
+   /* para cada casa (i,1), imprime uma linha do relatorio */
+   for (i = 0; i < n; i++) {
+      /* inicializa o rastro do Walk-Bot, usando -1 para indicar
+         que uma casa nao foi visitada */
+      for (lin = 0; lin < n; lin++) {
+         for (col = 0; col < m; col++) {
+            rastro[lin][col] = -1;
+         }
+      }
+      
+      /* coloca o Walk-Bot na posicao (i,1) e inicializa 
+         as variaveis passos e anda */
+      lin = i;
+      col = 0;
+      passos = -1;
+      anda = 1;
+      
+      /* loop principal: anda com o Walk-Bot enquanto ele nao 
+         sair do tabuleiro, entrar em loop ou parar. Sabemos 
+         que o Walk-Bot entra em loop quando ele visita uma 
+         casa ja visitada anteriormente, ou seja, o rastro dessa 
+         caso eh diferente de -1 */
+      do {
+         passos++;
+
+         if ((rastro[lin][col] != -1) || (col == m)) {
+            anda = 0;
+         } else {
+            rastro[lin][col] = passos;
+  
+            switch (tabuleiro[lin][col]) {
+               case 'L':
+                  col--;
+                  break;
+               case 'R':
+                  col++;
+                  break;
+               case 'U':
+                  lin--;
+                  break;
+               case 'D':
+                  lin++;
+                  break;
+               case 'X':
+                  anda = 0;
+                  break;
+            }
+         }
+      } while (anda);
+
+      /* verifica o motivo pelo qual o Walk-Bot parou de andar e 
+         imprime a saida correspondente */
+      if (col == m) {
+         printf("Saiu em (%d,%d) apos %d passo(s)\n", lin + 1, col, rastro[lin][col-1]);
+      } else if (tabuleiro[lin][col] == 'X') {
+         printf("Armadilha em (%d,%d) apos %d passo(s)\n", lin + 1, col + 1, rastro[lin][col]);
+      } else {
+         printf("Loop de tamanho %d\n", passos - rastro[lin][col]);
+      }
+   }
+   
+   return 0;
+}

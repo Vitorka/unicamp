@@ -1,0 +1,5 @@
+Saiu em (5,50) apos 53 passo(s)
+Armadilha em (2,1) apos 0 passo(s)
+Armadilha em (3,2) apos 1 passo(s)
+Armadilha em (4,49) apos 48 passo(s)
+Armadilha em (4,49) apos 49 passo(s)

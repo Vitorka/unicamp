@@ -1,0 +1,11 @@
+void debug(int num_elem, Heap heap[MAX])
+{
+    int i;
+    
+    for(i = 0; i < ((num_elem + 1) / 2); i++)
+    {
+        printf("Posicao: %d\n", i);
+        printf("Min: %d\n", heap[i].minimo);
+        printf("Max: %d\n\n", heap[i].maximo);
+    }
+}

@@ -1,0 +1,74 @@
+/*Rotaciona o no para a esquerda*/
+no *rotaciona_esq(no *no_atual)
+{ 
+    no *no_auxiliar;
+    
+    no_auxiliar = no_atual->pai;
+    
+    if(no_auxiliar == NULL)
+    {
+        no_atual->dir->pai = no_auxiliar;
+        no_auxiliar = no_atual->dir;
+        no_atual->dir = no_auxiliar->esq;
+        no_auxiliar->esq = no_atual;
+    }
+    else
+    {
+        if(no_atual->item < no_auxiliar->item)
+        {
+            no_auxiliar->esq = no_atual->dir;
+            no_atual->dir->pai = no_auxiliar;
+            no_atual->dir = no_auxiliar->esq->esq;
+            no_auxiliar->esq->esq = no_atual;
+        }
+        else
+        {
+            no_auxiliar->dir = no_atual->dir;
+            no_atual->dir->pai = no_auxiliar;
+            no_atual->dir = no_auxiliar->dir->esq;
+            no_auxiliar->dir->esq = no_atual;
+        }
+    }
+    
+    if(no_auxiliar->pai == NULL)
+    {
+        return no_auxiliar;
+    }
+    else
+    {
+        return rotaciona_esq(no_auxiliar);
+    }
+}
+
+
+/*funcao remove*/
+
+if((no_atual->dir == NULL) && (no_atual->esq == NULL))
+{
+    no_auxiliar = no_atual;
+    free(no_auxiliar);
+    no_atual = rotaciona(no_atual->pai);
+    
+    return no_atual;
+}
+else if(no_atual->esq != NULL)
+{
+    no_atual = rotaciona(no_atual);
+    no_atual->esq->pai = NULL;
+    no_auxiliar = remove_busca(no_atual->esq);
+    no_auxiliar = rotaciona(no_auxiliar);
+    no_auxiliar->dir = no_atual->dir;
+    no_atual->dir->pai = no_auxiliar;
+    free(no_atual);
+    return no_auxiliar;
+}
+else
+{
+    no_atual = rotaciona(no_atual);
+    no_auxiliar = no_atual;
+    no_atual->dir->esq = no_atual->esq;
+    no_atual->esq->pai = no_atual->dir;
+    no_atual = no_atual->dir;
+    free(no_auxiliar);
+    return no_atual;
+}

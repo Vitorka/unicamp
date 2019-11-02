@@ -1,0 +1,166 @@
+push {r0-r12}	@ Salva todos os registradores
+msr CPSR_c, #0x1F	@Ativa o modo SYSTEM
+
+ldr r0, [sp]            @Recupera o parametro 1: id_sonar
+
+msr CPSR_c, #0x13	@Ativa o modo supervisor, habilitando IRQ
+ldr r3, =GPIO_BASE	@pega a posicao inicial do GPIO
+ldr r4, =0b11111111111111111111111111000001	@Mascara de bits para zerar o ID do sonar
+ldr r5, [r3, #GPIO_DR]	@Carrega o valor de DR em r5
+and r5, r5, r4		@AND de r5 com r4 para zerar o ID do sonar
+mov r0, r0, lsl #2		@Desloa dois bits para a esquerda
+orr r5, r5, r0		@Junta r5 com r0 para pegar o id do sonar
+str r5, [r3, #GPIO_DR]	@Store r5 no DR
+
+ldr r6, =SYSTEM_TIME
+ldr r6, [r6]
+add r6, r6, #15
+delay_1:
+  ldr r7, =SYSTEM_TIME
+  ldr r7, [r7]
+  cmp r6, r7
+  bne delay_1
+
+ldr r4, =0b00000000000000000000000000000010	@Mascara para setar o trigger como 1
+orr r5, r5, r4				@Seta trigger como 1
+str r5, [r3, #GPIO_DR]			@Store r5 no DR
+
+ldr r6, =SYSTEM_TIME
+ldr r6, [r6]
+add r6, r6, #15
+delay_2:
+  ldr r7, =SYSTEM_TIME
+  ldr r7, [r7]
+  cmp r6, r7
+  bne delay_2
+
+ldr r4, =0b11111111111111111111111111111101	@Mascara para setar o trigger como 0
+and r5, r5, r4				@Seta trigger como 0
+str r5, [r3, #GPIO_DR]			@Store r5 no DR
+
+@Agora tem que esperar a flag ser 1
+verify_flag:
+
+  ldr r6, =SYSTEM_TIME
+  ldr r6, [r6]
+  add r6, r6, #15
+  delay_3:
+    ldr r7, =SYSTEM_TIME
+    ldr r7, [r7]
+    cmp r6, r7
+    bne delay_3
+
+  ldr r4, =0b00000000000000000000000000000001	@Mascara para filtrar a flag
+  ldr r5, [r3, #GPIO_DR]				@Carrega PSR em r5
+  ldr r6, [r3, #GPIO_DR]
+  and r5, r5, r4					@AND de r5 com r4 para verificar a flag
+  cmp r5, #1					@Se r5 for 0
+  bne verify_flag					@Pula para verify_flag de novo
+
+ldr r4, =0b00000000000000111111111111000000		@Mascara para pegar a distancia
+and r5, r5, r4					@AND para r5 ficar apenas com os bits da distancia setados
+mov r5, r5, lsr #6					@Desloca 6 bits para a direita para retornar o valor
+mov r0, r5						@Coloca o valor em r0
+
+movs pc, lr						@Retorna
+
+
+
+
+
+
+
+
+
+
+
+
+
+push {r0-r12}  @Salva todos os registradores
+
+@Recupera os parametros
+msr CPSR_c, #0x1F       @Muda para o modo SYSTEM
+ldr r0, [sp]            @Recupera o parametro 1: id_sonar
+mov r0, r0, lsl #2      @Desloca o valor de id_sonar para a posicao SONAR_MUX em DR
+
+@Recupera e modifica DR
+rot1:
+msr CPSR_c, #0x13       @Muda para o modo SUPERVISOR
+ldr r1, =GPIO_BASE      @Coloca em r1 o endereco base de GPIO
+ldr r2, [r1, #GPIO_DR]  @Coloca em r2, DR
+ldr r3, =0b11111111111111111111111111000001 @Mascara para zerar o que existia em SONAR_MUX e TRIGGER em DR
+and r2, r2, r3          @Zera o campo SONAR_MUX em DR
+orr r2, r2, r0          @Adiciona em r2 o id do sonar a ser lido
+str r2, [r1, #GPIO_DR]  @Adiciona em DR o id do sonar a ser lido
+
+@Delay
+ldr r4, =SYSTEM_TIME
+ldr r4, [r4]            @Recupera a variavel que contem o valor do tempo de sistema
+add r4, r4, #10         @Adiciona a ela o tempo de delay
+@Aguarda ter passado o tempo de delay necessario no tempo do sistema
+delay_1:
+  ldr r5, =SYSTEM_TIME
+  ldr r5, [r5]
+  cmp r4, r5
+  bne delay_1
+
+@Modifica o TRIGGER para 1
+rot2:
+msr CPSR_c, #0x13
+ldr r2, [r1, #GPIO_DR]  @Coloca em r2, DR
+ldr r3, =0b00000000000000000000000000000010 @Mascara para setar o TRIGGER como 1
+orr r2, r2, r3          @Seta em r2 o TRIGGER como 1
+str r2, [r1, #GPIO_DR]  @Seta em DR o TRIGGER como 1
+
+ldr r8, [r1, #GPIO_DR]
+
+@Delay
+ldr r4, =SYSTEM_TIME
+ldr r4, [r4]            @Recupera a variavel que contem o valor do tempo de sistema
+add r4, r4, #10         @Adiciona a ela o tempo de delay
+@Aguarda ter passado o tempo de delay necessario no tempo do sistema
+delay_2:
+  ldr r5, =SYSTEM_TIME
+  ldr r5, [r5]
+  cmp r4, r5
+  bne delay_2
+
+@Modifica o TRIGGER para 0
+rot3:
+msr CPSR_c, #0x13
+ldr r2, [r1, #GPIO_DR]  @Coloca em r2, DR
+ldr r3, =0b11111111111111111111111111111101 @Mascara para setar o TRIGGER como 0-
+and r2, r2, r3          @Seta em r2 o TRIGGER como 0
+str r2, [r1, #GPIO_DR]  @Seta em DR o TRIGGER como 0
+
+verifica_flag:
+
+  @Delay
+  ldr r4, =SYSTEM_TIME
+  ldr r4, [r4]            @Recupera a variavel que contem o valor do tempo de sistema
+  add r4, r4, #10         @Adiciona a ela o tempo de delay
+  @Aguarda ter passado o tempo de delay necessario no tempo do sistema
+  delay_3:
+    ldr r5, =SYSTEM_TIME
+    ldr r5, [r5]
+    cmp r4, r5
+    bne delay_3
+
+  rot4:
+  msr CPSR_c, #0x13
+  ldr r2, [r1, #GPIO_DR] @Coloca em r2, DR
+  ldr r3, =0b00000000000000000000000000000001 @Mascara para recuperar somente o bit da FLAG
+  and r2, r2, r3         @Aplica em r2 a mascara para recuperar o bit da FLAG
+  cmp r2, #1             @Confere se a FLAG tem valor 1
+  bne verifica_flag      @Caso nao tenha, faz a verificacao novamente
+
+@Caso a FLAG seja 1
+rot5:
+ldr r2, [r1, #GPIO_PSR] @Coloca em r2, DR
+mov r2, r2, lsr #6     @Desloca os bits, em DR, que representam a distancia
+ldr r3, =0b00000000000000000000111111111111 @Mascara para colocar em r0 somente o valor da distancia lida
+and r0, r2, r3         @Retorna em r0 o valor da distancia lida pelo radar
+
+pop {r0-r12}
+
+movs pc, lr

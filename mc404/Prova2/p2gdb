@@ -1,0 +1,7 @@
+target remote localhost: 5000
+b do
+display $r4
+display $r5
+display $r6
+display $r7
+display $r8

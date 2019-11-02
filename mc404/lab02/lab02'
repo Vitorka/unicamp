@@ -1,0 +1,46 @@
+.org 0x100
+g:          #Constante com o valor da gravidade / pos: 100
+    .word 10
+
+vel:        #Variavel onde sera armazenada a velocidade / pos: 101
+    
+div:        #Constante com o valor 2, para calcular a velocidade / pos: 102
+    .word 2
+
+.org 0x105:
+x:          #Variavel onde sera armazenada a posicao / pos: 105
+    
+y:          #Variavel com valor da multiplicacao da posicao pela gravidade / pos: 106          
+
+cont:       #Variavel que armazena o valor do contador / pos: 107
+    .word 9
+    
+um:     
+    .word 1
+
+#Instrucoes
+.org 0x000:
+    LOAD MQ, M(100)     #Carrega para MQ o valor da gravidade g
+    MUL M(105)          #Realiza a multiplicacao do valor de entrada com o valor da gravidade
+    LOAD MQ             #Transfere o que esta armazenado na variavel MQ em AC
+    STOR M(106)         #Armeza na memoria, o valor da multiplicacao da posicao pela gravidade
+    
+    #Divide o valor obtido por 2
+    LOAD M(106)
+    DIV M(102)          #Divide o valor de vel, por 2
+    LOAD MQ             #Armazena o valor de MQ em AC
+    STOR M(101)         #Armazena o valor da divisao por dois, na variavel de velocidade
+
+    #Realiza a aproximacao para a raiz
+    LOAD M(106)         #Armazena em AC, o valor de y
+    DIV M(101)          #Divide y, pela velocidade
+    LOAD MQ             #Armazena o valor de MQ em AC
+    ADD M(101)          #Adiciona ao valor da velocidade o valor da divisao de y pela velocidade
+    DIV M(102)          #Divide o resultado armazenado em AC, por 2
+    LOAD MQ             #Armazena o resultado da divisao que esta em MQ, em AC
+    STOR M(101)         #Armazena no valor da velocidade
+    LOAD M(107)         #Armazena em AC o valor do contador
+    SUB M(108)          #Subtrai 1 do valor do contador
+    STOR M(107)
+    JUMP+ M(004, 0:19)
+    
